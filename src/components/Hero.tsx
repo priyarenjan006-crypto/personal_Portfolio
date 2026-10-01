@@ -1,5 +1,5 @@
 import { motion, useMotionValueEvent, useScroll, type MotionValue } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { profile } from "../data";
 import { FRAME_COUNT, VIDEO_FPS, nearestLoaded } from "../hooks/useFrameSequence";
 import { useFixedSpeedPlayback } from "../hooks/useFixedSpeedPlayback";
@@ -84,7 +84,7 @@ export default function Hero({ frames, loadProgress }: HeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentFrame = useRef(0);
   const rafId = useRef(0);
-  const [frameLabel, setFrameLabel] = useState(1);
+
   const audio = useScrubAudio("/hero-audio.m4a");
 
   useFixedSpeedPlayback(sectionRef, FRAME_COUNT / VIDEO_FPS);
@@ -142,7 +142,7 @@ export default function Hero({ frames, loadProgress }: HeroProps) {
     if (index === currentFrame.current) return;
     const direction = index > currentFrame.current ? 1 : -1;
     currentFrame.current = index;
-    setFrameLabel(index + 1);
+
     scheduleRender();
     if (p > 0 && p < 1) scrub(index / VIDEO_FPS, direction);
   });
@@ -152,7 +152,7 @@ export default function Hero({ frames, loadProgress }: HeroProps) {
   const craft = usePhase(scrollYProgress, { fadeIn: [0.56, 0.62], fadeOut: [0.76, 0.81] });
   const hello = usePhase(scrollYProgress, { fadeIn: [0.84, 0.92] });
   const cueOpacity = useMapped(scrollYProgress, [0, 0.04], [1, 0]);
-  const barScale = useMapped(scrollYProgress, [0, 1], [0, 1]);
+
 
   return (
     <section ref={sectionRef} id="top" className="relative h-[600vh]" aria-label="Introduction">
